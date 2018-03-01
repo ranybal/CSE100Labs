@@ -1,0 +1,32 @@
+#!/bin/bash
+rm -f resultHeap
+chmod +x ./GradeHeap
+chmod +x ./testfiles/sol.exe
+
+corr=0;
+
+echo "HeapSort.exe:"
+
+for i in `seq 1 10`; do
+    rm -f tempresult1
+    rm -f tempresult2 
+    ./HeapSort.exe < ./testfiles/t$i >> tempresult1
+    ./testfiles/sol.exe < ./testfiles/t$i >> tempresult2
+    diff tempresult1 tempresult2 >> tempcnt
+    if [ -s tempcnt ] ; then
+      echo "test $i: fail"
+      echo "test $i: fail" >> resultHeap
+    else
+      echo "test $i: success"
+      echo "test $i: success" >> resultHeap
+      ((corr=corr+1))
+    fi;
+done
+
+echo "score: $corr";
+echo $(whoami) "score: ${corr}" >> resultHeap
+
+rm -f tempresult1
+rm -f tempresult2
+rm -f tempcnt
+

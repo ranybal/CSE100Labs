@@ -1,0 +1,32 @@
+#!/bin/bash
+rm -f resultQuick
+chmod +x ./GradeQuick
+chmod +x ./testfiles/sol.exe
+
+corr=0;
+
+echo "QuickSort.exe:"
+
+for i in `seq 1 10`; do
+    rm -f tempresult1
+    rm -f tempresult2 
+    ./QuickSort.exe < ./testfiles/t$i >> tempresult1
+    ./testfiles/sol.exe < ./testfiles/t$i >> tempresult2
+    diff tempresult1 tempresult2 >> tempcnt
+    if [ -s tempcnt ] ; then
+      echo "test $i: fail"
+      echo "test $i: fail" >> resultQuick
+    else
+      echo "test $i: success"
+      echo "test $i: success" >> resultQuick
+      ((corr=corr+1))
+    fi;
+done
+
+echo "score: $corr";
+echo $(whoami) "score: ${corr}" >> resultQuick
+
+rm -f tempresult1
+rm -f tempresult2
+rm -f tempcnt
+
